@@ -5,12 +5,13 @@ trigger:
 
 pool:
   vmImage: 'windows-latest'
-
+variables:
+- group: SQLSecrets
 variables:
   buildConfiguration: 'Release'
   webAppName: 'productapi'
   azureServiceConnection: 'AzureConnection1'
-
+   
 steps:
 # 1️⃣ Checkout code
 - checkout: self
