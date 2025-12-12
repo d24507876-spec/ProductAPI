@@ -8,7 +8,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  webAppName: 'productapi-cwa4fnezgchfdugp'
+  webAppName: 'productapi'
   azureServiceConnection: 'AzureConnection1'
 
 steps:
