@@ -5,9 +5,7 @@ trigger:
 
 pool:
   vmImage: 'windows-latest'
-variables:
-- group: SQLSecrets
-variables:
+ variables:
   buildConfiguration: 'Release'
   webAppName: 'productapi'
   azureServiceConnection: 'AzureConnection1'
