@@ -30,6 +30,19 @@ namespace ProductAPI.Controllers
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(Get), new { id = product.Id }, product);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePrice(int id, [FromBody] decimal newPrice)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
+                return NotFound("Product not found.");
+
+            product.Price = newPrice;
+            await _context.SaveChangesAsync();
+
+            return Ok(product);
+        }
+
     }
-     
+
 }
