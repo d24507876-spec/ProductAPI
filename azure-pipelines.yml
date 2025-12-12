@@ -1,0 +1,55 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  webAppName: 'productapi-cwa4fnezgchfdugp'
+  azureServiceConnection: 'AzureConnection1'
+
+steps:
+# 1️⃣ Checkout code
+- checkout: self
+
+# 2️⃣ Install .NET SDK
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '8.x'
+
+# 3️⃣ Restore NuGet packages
+- task: DotNetCoreCLI@2
+  displayName: 'Restore Packages'
+  inputs:
+    command: restore
+    projects: '**/*.csproj'
+
+# 4️⃣ Build project
+- task: DotNetCoreCLI@2
+  displayName: 'Build Project'
+  inputs:
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+# 5️⃣ Publish project
+- task: DotNetCoreCLI@2
+  displayName: 'Publish Project'
+  inputs:
+    command: publish
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    publishWebProjects: false
+    zipAfterPublish: true
+
+# 6️⃣ Deploy to Azure Web App
+- task: AzureWebApp@1
+  displayName: 'Deploy to Azure Web App'
+  inputs:
+    azureSubscription: '$(azureServiceConnection)'
+    appName: '$(webAppName)'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
