@@ -5,6 +5,7 @@ trigger:
 
 pool:
   vmImage: 'windows-latest'
+  
  variables:
   buildConfiguration: 'Release'
   webAppName: 'productapi'
